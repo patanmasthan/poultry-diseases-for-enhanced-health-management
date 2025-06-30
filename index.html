@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Poultry Disease Predictor</title>
+</head>
+<body>
+<h1>Poultry Disease Predictor</h1>
+<form id='form'>
+  <label>Symptoms (comma separated):</label><br>
+  <input type='text' id='symptoms' />
+  <button type='submit'>Predict</button>
+</form>
+<div id='result'></div>
+<script>
+document.getElementById('form').onsubmit = async (e) => {
+  e.preventDefault();
+  const symptoms = document.getElementById('symptoms').value.split(',').map(s => s.trim());
+  const res = await fetch('/predict', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ symptoms })
+  });
+  const data = await res.json();
+  document.getElementById('result').innerText = `Prediction: ${data.prediction}\nTreatment: ${data.treatment}`;
+};
+</script>
+</body>
+</html>
